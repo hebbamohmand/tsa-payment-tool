@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TSA Payment Calculator</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <h1>TSA Payment Calculator</h1>
+
+  <form id="paymentForm">
+    <div class="form-section">
+      <label for="discountType">Discount Type:</label>
+      <select id="discountType">
+        <option value="none">None</option>
+        <option value="easycard">EasyCard or Board (10% off merch)</option>
+        <option value="board">Board AND EasyCard (wholesale merch)</option>
+      </select>
+    </div>
+  </form>
+
+  <p id="totalDisplay">Total: $0.00</p>
+  <div id="breakdown"></div>
+
+  <button id="qrbutton" style="display:none;" onclick="generateQR()">Generate Venmo QR Code</button>
+  <div id="qrcode"></div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>
+
