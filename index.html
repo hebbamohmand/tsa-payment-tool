@@ -9,16 +9,19 @@
 <body>
   <h1>TSA Payment Calculator</h1>
 
-  <form id="paymentForm">
-    <div class="form-section">
-      <label for="discountType">Discount Type:</label>
-      <select id="discountType">
-        <option value="none">None</option>
-        <option value="easycard">EasyCard or Board (10% off merch)</option>
-        <option value="board">Board AND EasyCard (wholesale merch)</option>
-      </select>
-    </div>
-  </form>
+<form id="paymentForm">
+  <div class="form-section">
+    <label for="discountType">Discount Type:</label>
+    <select id="discountType">
+      <option value="none">None</option>
+      <option value="easycard">EasyCard or Board (10% off merch)</option>
+      <option value="board">Board AND EasyCard (wholesale merch)</option>
+    </select>
+  </div>
+</form>
+
+<p id="loadingMsg" style="color: #34006e; font-style: italic;">Loading item data...</p>
+<p id="errorMsg" style="color: red; display: none;">Failed to load item data. Please try again later.</p>
 
   <p id="totalDisplay">Total: $0.00</p>
   <div id="breakdown"></div>
