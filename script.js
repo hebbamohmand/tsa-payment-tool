@@ -5,7 +5,7 @@ const loadingMsg = document.getElementById('loadingMsg');
 const errorMsg = document.getElementById('errorMsg');
 
 // fetch item data from the server
-fetch("https://tsa-backend-6ycb.onrender.com/item-prices")
+fetch("https://tsa-backend-id2a.onrender.com/item-prices")
   .then((res) => {
     if (!res.ok) throw new Error("Fetch failed with status " + res.status);
     return res.json();
