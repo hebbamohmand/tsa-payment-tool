@@ -1,6 +1,6 @@
 let items = {};
 
-const form - document.getElementById('paymentForm');
+const form = document.getElementById('paymentForm');
 
 // fetch item data from the server
 fetch("https://tsa-backend-6ycb.onrender.com/item-prices")
