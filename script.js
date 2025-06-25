@@ -1,8 +1,9 @@
 let items = {};
+const allItemInputs = {}; // to track inputs by ID
 
-const form = document.getElementById('paymentForm');
 const loadingMsg = document.getElementById('loadingMsg');
 const errorMsg = document.getElementById('errorMsg');
+const itemSections = document.getElementById('item-sections');
 
 // fetch item data from the server
 fetch("https://tsa-backend-id2a.onrender.com/item-prices")
@@ -12,7 +13,7 @@ fetch("https://tsa-backend-id2a.onrender.com/item-prices")
   })
   .then((data) => {
     items = data;
-    generateItemInputs();
+    renderCategorizedItems(data);
     loadingMsg.style.display = "none";
   })
   .catch((err) => {
@@ -21,20 +22,32 @@ fetch("https://tsa-backend-id2a.onrender.com/item-prices")
     errorMsg.style.display = "block";
   });
 
-function generateItemInputs() {
-  for (let key in items) {
-    const item = items[key];
-    const label = document.createElement("label");
-    label.className = "form-section";
-    label.innerHTML = `${item.title} ($${item.price}): <input type="number" min="0" id="${key}" value="0">`;
-    form.appendChild(label);
+// load categorized items
+function renderCategorizedItems(categorizedItems) {
+  for (const [category, categoryItems] of Object.entries(categorizedItems)) {
+    const section = document.createElement("section");
+    const header = document.createElement("h3");
+    header.textContent = category;
+    section.appendChild(header);
+
+    categoryItems.forEach(item => {
+      const itemDiv = document.createElement("div");
+      itemDiv.classList.add("item-entry");
+      const inputId = item.id;
+
+      itemDiv.innerHTML = `
+        <label>
+          ${item.title} ($${item.price}):
+          <input type="number" min="0" value="0" id="${inputId}">
+        </label>
+      `;
+
+      allItemInputs[inputId] = item;
+      section.appendChild(itemDiv);
+    });
+
+    itemSections.appendChild(section);
   }
-  const calculateButton = document.createElement("button");
-  calculateButton.textContent = "Calculate Total";
-  calculateButton.type = "button";
-  calculateButton.className = "form-section";
-  calculateButton.onclick = calculateTotal;
-  form.appendChild(calculateButton);
 }
 
 function calculateTotal() {
@@ -42,30 +55,29 @@ function calculateTotal() {
   let breakdownHTML = "<h3>Order Breakdown:</h3><ul>";
   const discount = document.getElementById("discountType").value;
 
-  for (let key in items) {
-    const item = items[key];
-    const quantity = parseInt(document.getElementById(key).value) || 0;
+  for (const [itemId, item] of Object.entries(allItemInputs)) {
+    const quantity = parseInt(document.getElementById(itemId).value) || 0;
 
     if (quantity > 0) {
       let unitPrice = item.price;
 
       if (item.type === "Merch") {
         if (discount === "easycard") {
-          unitPrice = item.price * 0.9; // 10% discount
+          unitPrice = item.price * 0.9; // 10% off for EasyCard/board members
         } else if (discount === "board" && item.cost !== undefined) {
-          unitPrice = item.cost; // wholesale price
+          unitPrice = item.cost; // Board members with EasyCard pay item cost
         }
       }
 
       const itemTotal = unitPrice * quantity;
       total += itemTotal;
-      breakdownHTML += `${quantity} × ${item.title} — $${itemTotal.toFixed(2)}<br>`;
+      breakdownHTML += `<li>${quantity} x ${item.title} - $${itemTotal.toFixed(2)}</li>`;
     }
   }
 
   total = Math.round(total * 100) / 100;
   document.getElementById("totalDisplay").innerText = `Total: $${total}`;
-  document.getElementById("breakdown").innerHTML = breakdownHTML;
+  document.getElementById("breakdown").innerHTML = breakdownHTML + "</ul>";
   document.getElementById("qrbutton").style.display = total > 0 ? "inline" : "none";
 }
 
@@ -78,3 +90,4 @@ function generateQR() {
   document.getElementById("qrcode").style.display = "block";
   new QRCode(document.getElementById("qrcode"), venmoURL);
 }
+

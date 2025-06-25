@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TSA Payment Calculator</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- Navigation bar... dont know if i want this yet -->
+  <nav class="navbar">
+    <div class="logo">
+      <img src="tsa_logo.png" alt="TSA Logo" />
+    </div>
+    <ul class="nav-links">
+      <li><a href="home.html">Home</a></li>
+      <li><a href="calculator.html">Payment Calculator</a></li>
+    </ul>
+  </nav>
+
+  <!-- page content -->
+  <main class="calculator-content">
+    <h1>TSA at UVA</h1>
+    <h2>Payment Calculator</h2>
+    <p>Use this page to calculate price totals and to generate Venmo QR codes for payment!</p>
+
+    <p id="loadingMsg" style="color: #34006e; font-style: italic;">Loading item data...</p>
+    <p id="errorMsg" style="color: red; display: none;">Failed to load item data. Please try again later.</p>
+
+    <!-- dynamic items by category, sorted in API -->
+    <section id="item-sections"></section>
+
+    <!-- discount selector -->
+    <form id="paymentForm">
+      <div class="form-section">
+        <label for="discountType">Discount Type:</label>
+        <select id="discountType">
+          <option value="none">None</option>
+          <option value="easycard">EasyCard or Board (10% off merch)</option>
+          <option value="board">Board AND EasyCard (wholesale merch)</option>
+        </select>
+      </div>
+    </form>
+
+    <!-- total + breakdown -->
+    <section>
+      <button type="button" onclick="calculateTotal()">Calculate Total</button>
+      <p id="totalDisplay"><strong>Total:</strong> $0.00</p>
+      <div id="breakdown"></div>
+    </section>
+
+    <!-- Venmo QR code generation -->
+    <button id="qrbutton" style="display:none;" onclick="generateQR()">Generate Venmo QR Code</button>
+    <div id="qrcode"></div>
+
+    <!-- scripts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+    <script src="script.js"></script>
+  </main>
+</body>
+</html>
+
