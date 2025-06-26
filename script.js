@@ -1,9 +1,9 @@
-let items = {};
-const allItemInputs = {}; // to track inputs by ID
-
-const loadingMsg = document.getElementById('loadingMsg');
-const errorMsg = document.getElementById('errorMsg');
-const itemSections = document.getElementById('item-sections');
+document.addEventListener("DOMContentLoaded", () => {
+  let items = {};
+  const allItemInputs = {};
+  const loadingMsg = document.getElementById('loadingMsg');
+  const errorMsg = document.getElementById('errorMsg');
+  const itemSections = document.getElementById('item-sections');
 
 // fetch item data from the server
 fetch("https://tsa-backend-id2a.onrender.com/item-prices")
